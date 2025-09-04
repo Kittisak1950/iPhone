@@ -1,0 +1,670 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>COCONUT Store</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    #overlay {
+      position: fixed; inset: 0;
+      background: rgba(0,0,0,0.3);
+      display: none; z-index: 999;
+    }
+    #option-popup, #cart-popup, #checkout-popup {
+      position: fixed;
+      top: 20%;
+      left: 50%;
+      transform: translate(-50%, -20%);
+      background: white;
+      width: 360px;
+      max-height: 70vh;
+      overflow-y: auto;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+      padding: 1rem;
+      border-radius: 0.5rem;
+      display: none;
+      z-index: 1000;
+    }
+    .btn-disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+  </style>
+</head>
+<body class="bg-gray-100 min-h-screen p-8">
+
+  <!-- Overlay -->
+  <div id="overlay"></div>
+
+  <!-- Header -->
+  <header class="flex items-center justify-between mb-8">
+    <div class="flex items-center gap-4">
+      <img src="logo.jpg" alt="COCONUT Logo" class="w-12 h-12 rounded-full object-cover shadow" />
+      <div class="text-2xl font-bold tracking-wide">COCONUT</div>
+    </div>
+
+    <div class="flex items-center gap-4">
+      <input id="search-input" type="text" class="w-72 h-10 pl-4 pr-10 rounded-full border border-gray-300" placeholder="ค้นหาสินค้า" />
+      <button class="w-10 h-10 rounded-md border border-gray-300 flex items-center justify-center">👤</button>
+      <div class="relative">
+        <button id="cart-btn" class="w-10 h-10 rounded-md border border-gray-300 flex items-center justify-center">🛒</button>
+        <span id="cart-count" class="absolute -top-1 -right-1 bg-red-500 text-white rounded-full text-xs w-5 h-5 flex items-center justify-center">0</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- Product Grid -->
+  <main>
+    <div id="product-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+
+      <!-- iPhone 16 -->
+      <div class="bg-white rounded-lg shadow-sm border border-gray-100 p-4 product" 
+           data-name="iPhone 16" data-price="26800" 
+           data-colors='["Black","White","Pink","Gray","Ultramarine Blue"]' 
+           data-capacities='["128GB","256GB","512GB"]' 
+           data-img="https://via.placeholder.com/200x200?text=iPhone+16">
+        <div class="h-56 flex items-center justify-center bg-gray-50 rounded-md overflow-hidden">
+          <img src="iPhone 16.jpg" alt="iPhone 16" class="max-h-full object-contain" />
+        </div>
+        <div class="mt-4">
+          <h3 class="text-sm font-medium text-gray-800">iPhone 16</h3>
+          <p class="text-sm text-gray-500 mt-1">128GB Black</p>
+          <div class="mt-4 flex items-center justify-between">
+            <div>
+              <p class="text-sm text-gray-500">เริ่มต้นที่</p>
+              <p class="text-lg font-semibold text-gray-900">฿26,800</p>
+            </div>
+            <button class="buy-btn w-10 h-10 rounded-full bg-blue-500 text-white flex items-center justify-center shadow">ซื้อ</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- iPhone 16 Plus -->
+      <div class="bg-white rounded-lg shadow-sm border border-gray-100 p-4 product" 
+           data-name="iPhone 16 Plus" data-price="30800" 
+           data-colors='["Black","White","Pink","Gray","Ultramarine Blue"]' 
+           data-capacities='["128GB","256GB","512GB"]' 
+           data-img="https://via.placeholder.com/200x200?text=iPhone+16+Plus">
+        <div class="h-56 flex items-center justify-center bg-gray-50 rounded-md overflow-hidden">
+         <img src="iPhone 16 Plus.jpg" alt="iPhone 16 Plus" class="max-h-full object-contain" />
+        </div>
+        <div class="mt-4">
+          <h3 class="text-sm font-medium text-gray-800">iPhone 16 Plus</h3>
+          <p class="text-sm text-gray-500 mt-1">128GB Black</p>
+          <div class="mt-4 flex items-center justify-between">
+            <div>
+              <p class="text-sm text-gray-500">เริ่มต้นที่</p>
+              <p class="text-lg font-semibold text-gray-900">฿30,800</p>
+            </div>
+            <button class="buy-btn w-10 h-10 rounded-full bg-blue-500 text-white flex items-center justify-center shadow">ซื้อ</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- iPhone 16 Pro -->
+      <div class="bg-white rounded-lg shadow-sm border border-gray-100 p-4 product" 
+           data-name="iPhone 16 Pro" data-price="37800" 
+           data-colors='["Black Titanium","White Titanium","Natural Titanium","Desert Titanium"]' 
+           data-capacities='["128GB","256GB","512GB","1TB"]' 
+           data-img="https://via.placeholder.com/200x200?text=iPhone+16+Pro">
+        <div class="h-56 flex items-center justify-center bg-gray-50 rounded-md overflow-hidden">
+          <img src="iPhone 16 Pro.jpg" alt="iPhone 16 Pro" class="max-h-full object-contain" />
+        </div>
+        <div class="mt-4">
+          <h3 class="text-sm font-medium text-gray-800">iPhone 16 Pro</h3>
+          <p class="text-sm text-gray-500 mt-1">128GB Black Titanium</p>
+          <div class="mt-4 flex items-center justify-between">
+            <div>
+              <p class="text-sm text-gray-500">เริ่มต้นที่</p>
+              <p class="text-lg font-semibold text-gray-900">฿37,800</p>
+            </div>
+            <button class="buy-btn w-10 h-10 rounded-full bg-blue-500 text-white flex items-center justify-center shadow">ซื้อ</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- iPhone 16 Pro Max -->
+      <div class="bg-white rounded-lg shadow-sm border border-gray-100 p-4 product" 
+           data-name="iPhone 16 Pro Max" data-price="42800" 
+           data-colors='["Black Titanium","White Titanium","Natural Titanium","Desert Titanium"]' 
+           data-capacities='["128GB","256GB","512GB","1TB"]' 
+           data-img="https://via.placeholder.com/200x200?text=iPhone+16+Pro+Max">
+        <div class="h-56 flex items-center justify-center bg-gray-50 rounded-md overflow-hidden">
+          <img src="iPhone 16 Pro Max.jpg" alt="iPhone 16 Pro Max" class="max-h-full object-contain" />
+        </div>
+        <div class="mt-4">
+          <h3 class="text-sm font-medium text-gray-800">iPhone 16 Pro Max</h3>
+          <p class="text-sm text-gray-500 mt-1">128GB Black Titanium</p>
+          <div class="mt-4 flex items-center justify-between">
+            <div>
+              <p class="text-sm text-gray-500">เริ่มต้นที่</p>
+              <p class="text-lg font-semibold text-gray-900">฿42,800</p>
+            </div>
+            <button class="buy-btn w-10 h-10 rounded-full bg-blue-500 text-white flex items-center justify-center shadow">ซื้อ</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- iPhone 16e -->
+      <div class="bg-white rounded-lg shadow-sm border border-gray-100 p-4 product" 
+           data-name="iPhone 16e" data-price="19800" 
+           data-colors='["Black","White"]' 
+           data-capacities='["128GB","256GB"]' 
+           data-img="https://via.placeholder.com/200x200?text=iPhone+16e">
+        <div class="h-56 flex items-center justify-center bg-gray-50 rounded-md overflow-hidden">
+          <img src="iPhone 16e.jpg" alt="iPhone 16e" class="max-h-full object-contain" />
+        </div>
+        <div class="mt-4">
+          <h3 class="text-sm font-medium text-gray-800">iPhone 16e</h3>
+          <p class="text-sm text-gray-500 mt-1">128GB Black</p>
+          <div class="mt-4 flex items-center justify-between">
+            <div>
+              <p class="text-sm text-gray-500">เริ่มต้นที่</p>
+              <p class="text-lg font-semibold text-gray-900">฿19,800</p>
+            </div>
+            <button class="buy-btn w-10 h-10 rounded-full bg-blue-500 text-white flex items-center justify-center shadow">ซื้อ</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- iPhone 15 -->
+      <div class="bg-white rounded-lg shadow-sm border border-gray-100 p-4 product" 
+           data-name="iPhone 15" data-price="25800" 
+           data-colors='["Black","Blue","Green","Yellow","Pink"]' 
+           data-capacities='["128GB","256GB","512GB"]' 
+           data-img="https://via.placeholder.com/200x200?text=iPhone+15">
+        <div class="h-56 flex items-center justify-center bg-gray-50 rounded-md overflow-hidden">
+          <img src="iPhone 15.jpg" alt="iPhone 15" class="max-h-full object-contain" />
+        </div>
+        <div class="mt-4">
+          <h3 class="text-sm font-medium text-gray-800">iPhone 15</h3>
+          <p class="text-sm text-gray-500 mt-1">128GB Black</p>
+          <div class="mt-4 flex items-center justify-between">
+            <div>
+              <p class="text-sm text-gray-500">เริ่มต้นที่</p>
+              <p class="text-lg font-semibold text-gray-900">฿25,800</p>
+            </div>
+            <button class="buy-btn w-10 h-10 rounded-full bg-blue-500 text-white flex items-center justify-center shadow">ซื้อ</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- iPhone 15 Plus -->
+      <div class="bg-white rounded-lg shadow-sm border border-gray-100 p-4 product" 
+           data-name="iPhone 15 Plus" data-price="28800" 
+           data-colors='["Black","Blue","Green","Yellow","Pink"]' 
+           data-capacities='["128GB","256GB","512GB"]' 
+           data-img="https://via.placeholder.com/200x200?text=iPhone+15+Plus">
+        <div class="h-56 flex items-center justify-center bg-gray-50 rounded-md overflow-hidden">
+          <img src="iPhone 15 Plus.jpg" alt="iPhone 15 Plus" class="max-h-full object-contain" />
+        </div>
+        <div class="mt-4">
+          <h3 class="text-sm font-medium text-gray-800">iPhone 15 Plus</h3>
+          <p class="text-sm text-gray-500 mt-1">128GB Black</p>
+          <div class="mt-4 flex items-center justify-between">
+            <div>
+              <p class="text-sm text-gray-500">เริ่มต้นที่</p>
+              <p class="text-lg font-semibold text-gray-900">฿28,800</p>
+            </div>
+            <button class="buy-btn w-10 h-10 rounded-full bg-blue-500 text-white flex items-center justify-center shadow">ซื้อ</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- iPhone 15 Pro -->
+      <div class="bg-white rounded-lg shadow-sm border border-gray-100 p-4 product" 
+           data-name="iPhone 15 Pro" data-price="35800" 
+           data-colors='["Black Titanium","White Titanium","Natural Titanium","Blue Titanium"]' 
+           data-capacities='["128GB","256GB","512GB","1TB"]' 
+           data-img="https://via.placeholder.com/200x200?text=iPhone+15+Pro">
+        <div class="h-56 flex items-center justify-center bg-gray-50 rounded-md overflow-hidden">
+          <img src="iPhone 15 Pro.jpg" alt="iPhone 15 Pro" class="max-h-full object-contain" />
+        </div>
+        <div class="mt-4">
+          <h3 class="text-sm font-medium text-gray-800">iPhone 15 Pro</h3>
+          <p class="text-sm text-gray-500 mt-1">128GB Black Titanium</p>
+          <div class="mt-4 flex items-center justify-between">
+            <div>
+              <p class="text-sm text-gray-500">เริ่มต้นที่</p>
+              <p class="text-lg font-semibold text-gray-900">฿35,800</p>
+            </div>
+            <button class="buy-btn w-10 h-10 rounded-full bg-blue-500 text-white flex items-center justify-center shadow">ซื้อ</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- iPhone 15 Pro Max -->
+      <div class="bg-white rounded-lg shadow-sm border border-gray-100 p-4 product" 
+           data-name="iPhone 15 Pro Max" data-price="40800" 
+           data-colors='["Black Titanium","White Titanium","Natural Titanium","Blue Titanium"]' 
+           data-capacities='["128GB","256GB","512GB","1TB"]' 
+           data-img="https://via.placeholder.com/200x200?text=iPhone+15+Pro+Max">
+        <div class="h-56 flex items-center justify-center bg-gray-50 rounded-md overflow-hidden">
+          <img src="iPhone 15 Pro Max.jpg" alt="iPhone 15 Pro Max" class="max-h-full object-contain" />
+        </div>
+        <div class="mt-4">
+          <h3 class="text-sm font-medium text-gray-800">iPhone 15 Pro Max</h3>
+          <p class="text-sm text-gray-500 mt-1">128GB Black Titanium</p>
+          <div class="mt-4 flex items-center justify-between">
+            <div>
+              <p class="text-sm text-gray-500">เริ่มต้นที่</p>
+              <p class="text-lg font-semibold text-gray-900">฿40,800</p>
+            </div>
+            <button class="buy-btn w-10 h-10 rounded-full bg-blue-500 text-white flex items-center justify-center shadow">ซื้อ</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- iPhone 14 -->
+      <div class="bg-white rounded-lg shadow-sm border border-gray-100 p-4 product" 
+           data-name="iPhone 14" data-price="19800" 
+           data-colors='["Black","Blue","Green","Yellow","Pink","Purple"]' 
+           data-capacities='["64GB","128GB","256GB"]' 
+           data-img="https://via.placeholder.com/200x200?text=iPhone+14">
+        <div class="h-56 flex items-center justify-center bg-gray-50 rounded-md overflow-hidden">
+          <img src="iPhone 14.jpg" alt="iPhone 14" class="max-h-full object-contain" />
+        </div>
+        <div class="mt-4">
+          <h3 class="text-sm font-medium text-gray-800">iPhone 14</h3>
+          <p class="text-sm text-gray-500 mt-1">64GB Black</p>
+          <div class="mt-4 flex items-center justify-between">
+            <div>
+              <p class="text-sm text-gray-500">เริ่มต้นที่</p>
+              <p class="text-lg font-semibold text-gray-900">฿19,800</p>
+            </div>
+            <button class="buy-btn w-10 h-10 rounded-full bg-blue-500 text-white flex items-center justify-center shadow">ซื้อ</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- iPhone 14 Plus -->
+      <div class="bg-white rounded-lg shadow-sm border border-gray-100 p-4 product" 
+           data-name="iPhone 14 Plus" data-price="22800" 
+           data-colors='["Black","Blue","Green","Yellow","Pink","Purple"]' 
+           data-capacities='["64GB","128GB","256GB"]' 
+           data-img="https://via.placeholder.com/200x200?text=iPhone+14+Plus">
+        <div class="h-56 flex items-center justify-center bg-gray-50 rounded-md overflow-hidden">
+          <img src="iPhone 14 Plus.jpg" alt="iPhone 14 Plus" class="max-h-full object-contain" />
+        </div>
+        <div class="mt-4">
+          <h3 class="text-sm font-medium text-gray-800">iPhone 14 Plus</h3>
+          <p class="text-sm text-gray-500 mt-1">64GB Black</p>
+          <div class="mt-4 flex items-center justify-between">
+            <div>
+              <p class="text-sm text-gray-500">เริ่มต้นที่</p>
+              <p class="text-lg font-semibold text-gray-900">฿22,800</p>
+            </div>
+            <button class="buy-btn w-10 h-10 rounded-full bg-blue-500 text-white flex items-center justify-center shadow">ซื้อ</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- iPhone 13 -->
+      <div class="bg-white rounded-lg shadow-sm border border-gray-100 p-4 product" 
+           data-name="iPhone 13" data-price="18800" 
+           data-colors='["Black","Blue","Green","Yellow","Pink","Purple","Red"]' 
+           data-capacities='["128GB","256GB","512GB"]' 
+           data-img="https://via.placeholder.com/200x200?text=iPhone+13">
+        <div class="h-56 flex items-center justify-center bg-gray-50 rounded-md overflow-hidden">
+          <img src="iPhone 13.jpg" alt="iPhone 13" class="max-h-full object-contain" />
+        </div>
+        <div class="mt-4">
+          <h3 class="text-sm font-medium text-gray-800">iPhone 13</h3>
+          <p class="text-sm text-gray-500 mt-1">128GB Black</p>
+          <div class="mt-4 flex items-center justify-between">
+            <div>
+              <p class="text-sm text-gray-500">เริ่มต้นที่</p>
+              <p class="text-lg font-semibold text-gray-900">฿18,800</p>
+            </div>
+            <button class="buy-btn w-10 h-10 rounded-full bg-blue-500 text-white flex items-center justify-center shadow">ซื้อ</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- iPhone 12 -->
+      <div class="bg-white rounded-lg shadow-sm border border-gray-100 p-4 product" 
+           data-name="iPhone 12" data-price="16800" 
+           data-colors='["Black","Blue","Green","Yellow","Pink","Red"]' 
+           data-capacities='["64GB","128GB","256GB"]' 
+           data-img="https://via.placeholder.com/200x200?text=iPhone+12">
+        <div class="h-56 flex items-center justify-center bg-gray-50 rounded-md overflow-hidden">
+          <img src="iPhone 12.jpg" alt="iPhone 12" class="max-h-full object-contain" />
+        </div>
+        <div class="mt-4">
+          <h3 class="text-sm font-medium text-gray-800">iPhone 12</h3>
+          <p class="text-sm text-gray-500 mt-1">64GB Black</p>
+          <div class="mt-4 flex items-center justify-between">
+            <div>
+              <p class="text-sm text-gray-500">เริ่มต้นที่</p>
+              <p class="text-lg font-semibold text-gray-900">฿16,800</p>
+            </div>
+            <button class="buy-btn w-10 h-10 rounded-full bg-blue-500 text-white flex items-center justify-center shadow">ซื้อ</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- iPhone 11 -->
+      <div class="bg-white rounded-lg shadow-sm border border-gray-100 p-4 product" 
+           data-name="iPhone 11" data-price="14800" 
+           data-colors='["Black","White","Green","Yellow","Pink","Red"]' 
+           data-capacities='["64GB","128GB","256GB"]' 
+           data-img="https://via.placeholder.com/200x200?text=iPhone+11">
+        <div class="h-56 flex items-center justify-center bg-gray-50 rounded-md overflow-hidden">
+          <img src="iPhone 11.jpg" alt="iPhone 11" class="max-h-full object-contain" />
+        </div>
+        <div class="mt-4">
+          <h3 class="text-sm font-medium text-gray-800">iPhone 11</h3>
+          <p class="text-sm text-gray-500 mt-1">64GB Black</p>
+          <div class="mt-4 flex items-center justify-between">
+            <div>
+              <p class="text-sm text-gray-500">เริ่มต้นที่</p>
+              <p class="text-lg font-semibold text-gray-900">฿14,800</p>
+            </div>
+            <button class="buy-btn w-10 h-10 rounded-full bg-blue-500 text-white flex items-center justify-center shadow">ซื้อ</button>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- Popup เลือกสีและความจุ -->
+  <div id="option-popup">
+    <h2 class="text-xl font-semibold mb-4" id="option-title">เลือกตัวเลือก</h2>
+    <div class="mb-4">
+      <label class="block font-medium mb-1">สี</label>
+      <select id="color-select" class="w-full border border-gray-300 rounded px-3 py-2"></select>
+    </div>
+    <div class="mb-4">
+      <label class="block font-medium mb-1">ความจุ</label>
+      <select id="capacity-select" class="w-full border border-gray-300 rounded px-3 py-2"></select>
+    </div>
+    <div class="flex justify-between items-center">
+      <button id="option-cancel" class="px-4 py-2 bg-gray-300 rounded hover:bg-gray-400">ยกเลิก</button>
+      <button id="option-add" class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">เพิ่มลงตะกร้า</button>
+    </div>
+  </div>
+
+  <!-- Popup ตะกร้า -->
+  <div id="cart-popup">
+    <h2 class="text-xl font-semibold mb-4">ตะกร้าสินค้า</h2>
+    <div id="cart-items" class="max-h-72 overflow-y-auto mb-4"></div>
+    <div class="flex justify-between font-semibold text-lg border-t pt-2">
+      <div>รวม</div>
+      <div id="cart-total">฿0</div>
+    </div>
+    <div class="mt-4 flex justify-between">
+      <button id="cart-close" class="px-4 py-2 bg-gray-300 rounded hover:bg-gray-400">ปิด</button>
+      <button id="checkout-btn" class="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700">ชำระเงิน</button>
+    </div>
+  </div>
+
+  <!-- Popup ชำระเงิน -->
+  <div id="checkout-popup">
+    <h2 class="text-xl font-semibold mb-4">ชำระเงิน</h2>
+    <form id="checkout-form" class="space-y-4">
+      <div>
+        <label for="customer-name" class="block mb-1 font-medium">ชื่อ</label>
+        <input type="text" id="customer-name" required class="w-full border border-gray-300 rounded px-3 py-2" />
+      </div>
+      <div>
+        <label for="customer-email" class="block mb-1 font-medium">อีเมล</label>
+        <input type="email" id="customer-email" required class="w-full border border-gray-300 rounded px-3 py-2" />
+      </div>
+      <div>
+        <p class="mb-2 font-medium">เลือกช่องทางชำระเงิน</p>
+        <select id="payment-method" class="w-full border border-gray-300 rounded px-3 py-2" required>
+          <option value="" disabled selected>-- กรุณาเลือก --</option>
+          <option value="credit-card">บัตรเครดิต/เดบิต</option>
+          <option value="bank-transfer">โอนเงินผ่านธนาคาร</option>
+          <option value="promptpay">พร้อมเพย์</option>
+        </select>
+      </div>
+      <div class="flex justify-between">
+        <button type="button" id="checkout-cancel" class="px-4 py-2 bg-gray-300 rounded hover:bg-gray-400">ยกเลิก</button>
+        <button type="submit" class="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700">ยืนยันชำระเงิน</button>
+      </div>
+    </form>
+  </div>
+
+<script>
+  const overlay = document.getElementById('overlay');
+  const optionPopup = document.getElementById('option-popup');
+  const cartPopup = document.getElementById('cart-popup');
+  const checkoutPopup = document.getElementById('checkout-popup');
+
+  const productGrid = document.getElementById('product-grid');
+  const cartBtn = document.getElementById('cart-btn');
+  const cartCount = document.getElementById('cart-count');
+  const cartItemsContainer = document.getElementById('cart-items');
+  const cartTotal = document.getElementById('cart-total');
+  const checkoutBtn = document.getElementById('checkout-btn');
+  const cartCloseBtn = document.getElementById('cart-close');
+  const searchInput = document.getElementById('search-input');
+
+  const optionTitle = document.getElementById('option-title');
+  const colorSelect = document.getElementById('color-select');
+  const capacitySelect = document.getElementById('capacity-select');
+  const optionAddBtn = document.getElementById('option-add');
+  const optionCancelBtn = document.getElementById('option-cancel');
+
+  const checkoutForm = document.getElementById('checkout-form');
+  const checkoutCancelBtn = document.getElementById('checkout-cancel');
+
+  let currentProduct = null;
+  let cart = [];
+
+  // ฟังก์ชันเปิด popup
+  function openPopup(popup) {
+    popup.style.display = 'block';
+    overlay.style.display = 'block';
+  }
+  // ปิด popup
+  function closePopup(popup) {
+    popup.style.display = 'none';
+    overlay.style.display = 'none';
+  }
+
+  // เปิด popup เลือกตัวเลือกสินค้า
+  productGrid.addEventListener('click', e => {
+    if (e.target.classList.contains('buy-btn')) {
+      const productEl = e.target.closest('.product');
+      currentProduct = {
+        name: productEl.dataset.name,
+        price: parseInt(productEl.dataset.price),
+        colors: JSON.parse(productEl.dataset.colors),
+        capacities: JSON.parse(productEl.dataset.capacities),
+        img: productEl.dataset.img,
+      };
+
+      optionTitle.textContent = `เลือกตัวเลือกสำหรับ ${currentProduct.name}`;
+      // เติม select options สีและความจุ
+      colorSelect.innerHTML = currentProduct.colors.map(c => `<option value="${c}">${c}</option>`).join('');
+      capacitySelect.innerHTML = currentProduct.capacities.map(c => `<option value="${c}">${c}</option>`).join('');
+
+      openPopup(optionPopup);
+    }
+  });
+
+  // กดปุ่มยกเลิก popup ตัวเลือก
+  optionCancelBtn.addEventListener('click', () => {
+    closePopup(optionPopup);
+  });
+
+  // กดเพิ่มสินค้าลงตะกร้า
+  optionAddBtn.addEventListener('click', () => {
+    const selectedColor = colorSelect.value;
+    const selectedCapacity = capacitySelect.value;
+
+    if (!selectedColor || !selectedCapacity) {
+      alert('กรุณาเลือกสีและความจุ');
+      return;
+    }
+
+    // เช็คว่ามีสินค้านี้ในตะกร้าแล้วหรือยัง (ชื่อ, สี, ความจุ ต้องเหมือนกัน)
+    const existingIndex = cart.findIndex(item =>
+      item.name === currentProduct.name &&
+      item.color === selectedColor &&
+      item.capacity === selectedCapacity
+    );
+
+    if (existingIndex >= 0) {
+      cart[existingIndex].quantity++;
+    } else {
+      cart.push({
+        ...currentProduct,
+        color: selectedColor,
+        capacity: selectedCapacity,
+        quantity: 1
+      });
+    }
+
+    updateCartCount();
+    closePopup(optionPopup);
+  });
+
+  // อัพเดตจำนวนสินค้าตะกร้า
+  function updateCartCount() {
+    let totalQuantity = cart.reduce((sum, item) => sum + item.quantity, 0);
+    cartCount.textContent = totalQuantity;
+  }
+
+  // แสดง popup ตะกร้า
+  cartBtn.addEventListener('click', () => {
+    renderCartItems();
+    openPopup(cartPopup);
+  });
+
+  // ปิดตะกร้า
+  cartCloseBtn.addEventListener('click', () => {
+    closePopup(cartPopup);
+  });
+
+  // แสดงสินค้าในตะกร้า
+  function renderCartItems() {
+    if (cart.length === 0) {
+      cartItemsContainer.innerHTML = '<p>ตะกร้าว่าง</p>';
+      cartTotal.textContent = '฿0';
+      return;
+    }
+    cartItemsContainer.innerHTML = '';
+
+    cart.forEach((item, index) => {
+      const itemEl = document.createElement('div');
+      itemEl.className = 'flex items-center justify-between mb-3';
+
+      itemEl.innerHTML = `
+        <div>
+          <p class="font-semibold">${item.name}</p>
+          <p class="text-sm text-gray-600">สี: ${item.color} | ความจุ: ${item.capacity}</p>
+          <p class="text-sm text-gray-600">ราคา: ฿${item.price.toLocaleString()}</p>
+        </div>
+        <div class="flex items-center gap-2">
+          <button data-index="${index}" class="btn-decrease px-2 py-1 bg-gray-300 rounded hover:bg-gray-400">-</button>
+          <span>${item.quantity}</span>
+          <button data-index="${index}" class="btn-increase px-2 py-1 bg-gray-300 rounded hover:bg-gray-400">+</button>
+        </div>
+      `;
+      cartItemsContainer.appendChild(itemEl);
+    });
+
+    const total = cart.reduce((sum, i) => sum + i.price * i.quantity, 0);
+    cartTotal.textContent = `฿${total.toLocaleString()}`;
+  }
+
+  // เพิ่มลดจำนวนสินค้าในตะกร้า
+  cartItemsContainer.addEventListener('click', e => {
+    if (e.target.classList.contains('btn-increase')) {
+      const i = parseInt(e.target.dataset.index);
+      cart[i].quantity++;
+      renderCartItems();
+      updateCartCount();
+    }
+    if (e.target.classList.contains('btn-decrease')) {
+      const i = parseInt(e.target.dataset.index);
+      if (cart[i].quantity > 1) {
+        cart[i].quantity--;
+      } else {
+        cart.splice(i, 1);
+      }
+      renderCartItems();
+      updateCartCount();
+    }
+  });
+
+  // ปุ่มชำระเงินในตะกร้า
+  checkoutBtn.addEventListener('click', () => {
+    closePopup(cartPopup);
+    openPopup(checkoutPopup);
+  });
+
+  // ยกเลิกชำระเงิน
+  checkoutCancelBtn.addEventListener('click', () => {
+    closePopup(checkoutPopup);
+  });
+
+  // ส่งฟอร์มชำระเงิน
+  checkoutForm.addEventListener('submit', e => {
+    e.preventDefault();
+    if (cart.length === 0) {
+      alert('ไม่มีสินค้าที่จะชำระเงิน');
+      return;
+    }
+
+    const name = document.getElementById('customer-name').value.trim();
+    const email = document.getElementById('customer-email').value.trim();
+    const payment = document.getElementById('payment-method').value;
+
+    if (!name || !email || !payment) {
+      alert('กรุณากรอกข้อมูลให้ครบถ้วน');
+      return;
+    }
+
+    alert(`ขอบคุณสำหรับการสั่งซื้อ คุณ ${name}!\nรายละเอียดการสั่งซื้อจะส่งไปยังอีเมล: ${email}`);
+    
+    // เคลียร์ตะกร้าและปิด popup
+    cart = [];
+    updateCartCount();
+    closePopup(checkoutPopup);
+  });
+
+  // ค้นหาสินค้า
+  searchInput.addEventListener('input', () => {
+    const term = searchInput.value.toLowerCase();
+    document.querySelectorAll('.product').forEach(prod => {
+      const name = prod.dataset.name.toLowerCase();
+      if (name.includes(term)) prod.style.display = '';
+      else prod.style.display = 'none';
+    });
+  });
+
+</script>
+
+	<!-- ส่วนท้าย -->
+<footer class="mt-16 bg-gray-900 text-gray-300 py-8 px-6 rounded-t-lg">
+  <div class="max-w-7xl mx-auto flex flex-col md:flex-row md:justify-between md:items-center">
+    <div class="flex items-center mb-6 md:mb-0">
+      <img src="logo.jpg" alt="COCONUT Logo" class="w-12 h-12 rounded-full object-cover shadow mr-3" />
+      <span class="text-white text-xl font-bold tracking-wide">COCONUT</span>
+    </div>
+    <div class="text-center md:text-right space-y-1">
+      <p>© 2025 COCONUT Store. All rights reserved.</p>
+      <p>ติดต่อเรา: support@coconutstore.com | โทร. 02-123-4567</p>
+      <div class="flex justify-center md:justify-end space-x-4 mt-2">
+        <a href="#" class="hover:text-white" aria-label="Facebook">
+          <svg class="w-6 h-6 fill-current" viewBox="0 0 24 24"><path d="M22 12c0-5.523-4.477-10-10-10S2 6.477 2 12c0 5 3.657 9.128 8.438 9.877v-6.987h-2.54v-2.89h2.54v-2.205c0-2.507 1.492-3.89 3.777-3.89 1.094 0 2.238.195 2.238.195v2.46h-1.26c-1.243 0-1.63.771-1.63 1.562v1.878h2.773l-.443 2.89h-2.33v6.987C18.343 21.128 22 17 22 12z"/></svg>
+        </a>
+        <a href="#" class="hover:text-white" aria-label="Twitter">
+          <svg class="w-6 h-6 fill-current" viewBox="0 0 24 24"><path d="M8.29 20c7.547 0 11.675-6.155 11.675-11.49 0-.175 0-.349-.012-.52A8.18 8.18 0 0 0 22 5.92a8.27 8.27 0 0 1-2.357.636 4.098 4.098 0 0 0 1.804-2.27 8.194 8.194 0 0 1-2.605.982A4.092 4.092 0 0 0 11.13 8.29a11.602 11.602 0 0 1-8.417-4.263 4.073 4.073 0 0 0 1.266 5.456A4.07 4.07 0 0 1 2.8 8.87v.05a4.093 4.093 0 0 0 3.28 4.012 4.073 4.073 0 0 1-1.08.143c-.265 0-.523-.027-.775-.076a4.093 4.093 0 0 0 3.817 2.847A8.2 8.2 0 0 1 2 18.407a11.58 11.58 0 0 0 6.29 1.834"/></svg>
+        </a>
+        <a href="#" class="hover:text-white" aria-label="Instagram">
+          <svg class="w-6 h-6 fill-current" viewBox="0 0 24 24"><path d="M7.75 2h8.5A5.75 5.75 0 0 1 22 7.75v8.5A5.75 5.75 0 0 1 16.25 22h-8.5A5.75 5.75 0 0 1 2 16.25v-8.5A5.75 5.75 0 0 1 7.75 2zm0 2A3.75 3.75 0 0 0 4 7.75v8.5A3.75 3.75 0 0 0 7.75 20h8.5A3.75 3.75 0 0 0 20 16.25v-8.5A3.75 3.75 0 0 0 16.25 4zm4.25 2.25a4.75 4.75 0 1 1 0 9.5 4.75 4.75 0 0 1 0-9.5zm0 2a2.75 2.75 0 1 0 0 5.5 2.75 2.75 0 0 0 0-5.5zm3.75-.75a1 1 0 1 1-2 0 1 1 0 0 1 2 0z"/></svg>
+        </a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>
