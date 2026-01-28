@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Happy Birthday 🎂</title>
+<style>
+  body {
+    margin:0;
+    font-family: 'Baloo 2', cursive;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    height:100vh;
+    background:#ffe4e1;
+  }
+  .container {
+    text-align:center;
+    background:#fff;
+    padding:50px 40px;
+    border-radius:25px;
+    box-shadow:0 5px 25px rgba(0,0,0,0.1);
+  }
+  h1 { color:#ff69b4; font-size:3rem; margin-bottom:20px;}
+  .play-btn {
+    padding:15px 35px;
+    font-size:1.2rem;
+    font-weight:600;
+    color:#fff;
+    background:#ffb6c1;
+    border:none;
+    border-radius:50px;
+    cursor:pointer;
+  }
+  .play-btn:hover { transform:scale(1.05); }
+</style>
+</head>
+<body>
+<div class="container">
+  <h1>Happy Birthday! 🎉</h1>
+  <button class="play-btn" onclick="playSong()">🎶 เล่นเพลงกระดิ่ง 3 รอบ</button>
+</div>
+
+<script>
+function playSong() {
+  const AudioContext = window.AudioContext || window.webkitAudioContext;
+  const audioCtx = new AudioContext();
+
+  const notes = [
+    264, 264, 297, 264, 352, 330,
+    264, 264, 297, 264, 396, 352,
+    264, 264, 528, 440, 352, 330, 297,
+    466, 466, 440, 352, 396, 352
+  ];
+
+  const durations = [
+    300,150,450,450,450,900,
+    300,150,450,450,450,900,
+    300,150,450,450,450,450,900,
+    300,150,450,450,450,900
+  ];
+
+  const rounds = 3; // จำนวนรอบที่ต้องการ
+  let startTime = audioCtx.currentTime;
+
+  for (let r = 0; r < rounds; r++) {
+    notes.forEach((freq, i)=>{
+      const osc = audioCtx.createOscillator();
+      const gainNode = audioCtx.createGain();
+
+      osc.type = 'sine';
+      osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
+
+      gainNode.gain.setValueAtTime(0, startTime);
+      gainNode.gain.linearRampToValueAtTime(0.3, startTime+0.01);
+      gainNode.gain.exponentialRampToValueAtTime(0.001, startTime + durations[i]/1000);
+
+      osc.connect(gainNode);
+      gainNode.connect(audioCtx.destination);
+
+      osc.start(startTime);
+      osc.stop(startTime + durations[i]/1000);
+
+      startTime += durations[i]/1000;
+    });
+  }
+}
+</script>
+</body>
+</html>
